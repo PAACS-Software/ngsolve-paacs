@@ -1,0 +1,18 @@
+stages:
+  - build
+  - test
+  - timings
+  - cleanup
+  - deploy
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  UBUNTU_VERSION_LATEST: "24.10"
+  UBUNTU_VERSION_LTS: "24.04"
+
+include:
+  - tests/gitlab-ci/win.yml
+  - tests/gitlab-ci/mac.yml
+  - tests/gitlab-ci/linux.yml
+  - tests/gitlab-ci/deploy.yml
+  - tests/gitlab-ci/pip.yml

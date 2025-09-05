@@ -1,0 +1,54 @@
+
+############################################
+# Windows
+############################################
+
+.template_win: &win
+  tags:
+    - windows
+    - x64
+  before_script:
+    - set NG_USE_NATIVE_ARCH=OFF
+    - call tests\gitlab-ci\win\set_vars.bat
+
+win_build:
+  <<: *win
+  stage: build
+  script:
+    - call tests\gitlab-ci\win\build.bat
+    - IF %errorlevel% NEQ 0 exit /b %errorlevel%
+    - cd %CI_PROJECT_DIR%
+    - call tests\gitlab-ci\win\upload.bat
+    - IF %errorlevel% NEQ 0 exit /b %errorlevel%
+    - cd %CI_PROJECT_DIR%
+    - call tests\gitlab-ci\win\test.bat
+    - IF %errorlevel% NEQ 0 exit /b %errorlevel%
+
+.template_win_avx: &win_avx
+  tags:
+    - windows
+    - x64
+  before_script:
+    - set NG_USE_NATIVE_ARCH=ON
+    - call tests\gitlab-ci\win\set_vars.bat
+  only:
+    - schedules
+    - tags
+
+win_avx_build:
+  <<: *win_avx
+  stage: build
+  script:
+    - call tests\gitlab-ci\win\build.bat
+    - IF %errorlevel% NEQ 0 exit /b %errorlevel%
+    - cd %CI_PROJECT_DIR%
+    - call tests\gitlab-ci\win\test.bat
+
+deploy_win:
+  stage: deploy
+  tags:
+    - deploy
+  script:
+    - source tests/gitlab-ci/deploy/win.sh
+  when: manual
+  needs: ["win_build"]

@@ -1,0 +1,35 @@
+build:
+  number: 0
+package:
+  name: ngsolve{{suffix}}
+  version: '{{version}}'
+
+requirements:
+  build:
+    - python {{ python }}
+    - {{mpi}}     # [not win]
+    - netgen{{suffix}} {{netgen_version}}
+    - cmake 3.15.*
+    - mkl-devel
+    - nodejs      # [not win]
+
+  run:
+    - python {{ python }}
+    - netgen{{suffix}} {{netgen_version}}
+    - {{mpi}}     # [not win]
+    - mkl
+    - mkl-devel
+    - intel-openmp
+
+source:
+  path: ../../../../
+
+test:
+  imports:
+    - ngsolve
+
+about:
+  home: https://ngsolve.org
+  license: LGPL
+  summary: "Finite Element library"
+

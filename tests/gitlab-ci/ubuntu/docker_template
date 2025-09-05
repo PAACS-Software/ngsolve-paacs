@@ -1,0 +1,71 @@
+FROM ubuntu:{UBUNTU_VERSION}
+MAINTAINER Matthias Hochsteger <matthias.hochsteger@tuwien.ac.at>
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get update && apt-get -y install \
+        ccache \
+        cmake \
+        g++ \
+        git \
+        libcgns-dev \
+        libglu1-mesa-dev \
+        libhdf5-dev \
+        libocct-data-exchange-dev \
+        libocct-draw-dev \
+        libpython3-dev \
+        libsuitesparse-dev \
+        libtbb-dev \
+        libxi-dev \
+        libxmu-dev \
+        openssh-client \
+        occt-misc \
+        pandoc \
+        python3 \
+        python3-matplotlib \
+        python3-numpy \
+        python3-pip \
+        python3-pytest \
+        python3-scipy \
+        python3-tk \
+        python3-markupsafe \
+        python3-docutils \
+        python3-jinja2 \
+        tcl-dev \
+        tk-dev \
+        libopenmpi-dev \
+        openmpi-bin \
+        gfortran \
+        python3-mpi4py \
+        python3-petsc4py \
+        libngspice0 \
+        rsync \
+        libdrm2 \
+        libgbm1 \
+        libnss3 \
+        libxcomposite1 \
+        libxdamage1 \
+        libxfixes3 \
+        libxkbcommon0 \
+        libxrandr2 \
+        zip
+RUN pip3 install --break-system-packages \
+        ipykernel \
+        ipyparallel \
+        nbsphinx \
+        nbstripout \
+        nest-asyncio \
+        notebook \
+        playwright \
+        pybind11-stubgen \
+        sphinx \
+        sphinx-rtd-theme \
+        tensorflow \
+        webgui_jupyter_widgets \
+        widgetsnbextension
+RUN python3 -m playwright install
+RUN python3 -m playwright install-deps
+RUN pip3 install --break-system-packages git+https://github.com/PySpice-org/PySpice.git
+RUN ln -s /usr/lib/x86_64-linux-gnu/libngspice.so.0  /usr/lib/x86_64-linux-gnu/libngspice.so
+ENV PATH="/opt/netgen/bin:${PATH}"
+ADD . /root/src/ngsolve
+
