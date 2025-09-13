@@ -9,6 +9,7 @@ out
 CMakeSettings.json
 /external_dependencies/*.tar.gz
 /external_dependencies/*.tgz
+/external_dependencies/
 #for using lsp-mode on emacs the compile_commands.json must be in the source folder
 compile_commands.json
 .cquery_cached_index
